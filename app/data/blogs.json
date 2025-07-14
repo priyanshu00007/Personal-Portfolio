@@ -1,0 +1,29 @@
+[
+  {
+    "id": "nextjs-performance",
+    "title": "Optimizing Next.js Performance: A Complete Guide",
+    "excerpt": "Learn techniques to boost performance in Next.js using image optimization, dynamic imports, and more.",
+    "date": "2024-01-15",
+    "readTime": "8 min read",
+    "category": "Next.js",
+    "featured": true
+  },
+  {
+    "id": "react-patterns",
+    "title": "Modern React Patterns Every Developer Should Know",
+    "excerpt": "Latest React best practices like hooks, compound components, and context usage.",
+    "date": "2024-01-10",
+    "readTime": "6 min read",
+    "category": "React",
+    "featured": true
+  },
+  {
+    "id": "typescript-tips",
+    "title": "TypeScript Tips for Better Developer Experience",
+    "excerpt": "Discover useful TypeScript features to improve productivity.",
+    "date": "2024-01-05",
+    "readTime": "5 min read",
+    "category": "TypeScript",
+    "featured": false
+  }
+]

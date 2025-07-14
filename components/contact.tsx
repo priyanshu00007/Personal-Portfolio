@@ -199,7 +199,7 @@ export default function Contact() {
                 {
                   icon: <Mail className="h-6 w-6" />,
                   title: "Email",
-                  content: "priynshurathod518@gmail.com",
+                  content: "priyanshurathod518@gmail.com",
                   description: "Best way to reach me",
                 },
                 {

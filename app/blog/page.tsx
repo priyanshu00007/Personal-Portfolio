@@ -44,7 +44,7 @@ export default function BlogPage() {
                   <div className="flex items-center justify-between text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {new Date(post.date).toLocaleDateString()}
+                      {new Date(post.date).toLocaleDateString("en-US")}
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
@@ -72,7 +72,7 @@ export default function BlogPage() {
                   <Badge variant="secondary">{post.category}</Badge>
                   <div className="text-sm text-muted-foreground flex items-center gap-1">
                     <Calendar className="w-4 h-4" />
-                    {new Date(post.date).toLocaleDateString()}
+                    {new Date(post.date).toLocaleDateString("en-US")}
                   </div>
                 </div>
                 <CardTitle className="line-clamp-2">{post.title}</CardTitle>

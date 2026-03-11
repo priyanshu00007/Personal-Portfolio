@@ -1,176 +1,184 @@
 "use client"
 
+import { useRef, useEffect } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ExternalLink, Github, ArrowRight } from "lucide-react"
+import { ExternalLink, Github, ArrowRight, Layers } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const projects = [
    {
     "id": "Ecommerce Website",
     "title": "Ambrosia Sweets",
-    "description": "A feature-rich e-commerce platform built designed for a seamless and performant user experience Users can browse a wide range of traditional Indian sweets, add items to the cart, and check out with ease.",
+    "description": "A high-end e-commerce experience for traditional Indian sweets, focusing on smooth transitions and a premium aesthetic.",
     "image": "amb.png",
-    "technologies": ["Next.js", "TypeScript", "Express", "Node.js"],
-    "github": "https://github.com/yourproject",
-    "demo": "https://demo.com",
-    "featured": true
+    "technologies": ["Next.js", "TypeScript", "Tailwind"],
+    "github": "https://github.com/priyanshu00007",
+    "demo": "https://ambrosia-sweets.vercel.app/",
+    "accent": "from-orange-500 to-red-500"
   },
   {
     "id": "Chatapp",
-    "title": "AI-Powered Chatapp",
-    "description":
-      "A next-gen chat application combining real-time messaging with AI assistant capabilities using Gemini API and Socket.IO. Built with a modern frontend in React and a Python + WebSocket backend, the app also supports basic voice and rate-limiting features.",
+    "title": "Nexus AI Chat",
+    "description": "Real-time intelligent messaging platform integrated with Gemini AI for contextual assistance and multi-modal interactions.",
     "image": "chatapp.png",
-    "technologies": ["React", "Python", "Gemini", "Node js","Socket io"],
-    "github": "https://github.com",
-    "demo": "https://demo.com",
-    "featured": true
+    "technologies": ["React", "Python", "Socket.io", "Gemini"],
+    "github": "https://github.com/priyanshu00007",
+    "demo": "https://nexus-ai-chat.vercel.app/",
+    "accent": "from-blue-500 to-purple-500"
   },
   {
-    "id": "Learning Plaoform",
-    "title": "Ace it",
-    "description":
-      "An educational web app designed to guide students through complex tech topics with clarity. It delivers step-by-step learning paths, combining theory, quizzes, and practice problems to ensure real understanding.",
+    "id": "Learning Platform",
+    "title": "Ace It",
+    "description": "An immersive educational platform with interactive learning paths and progress tracking for modern tech stacks.",
     "image": "aceit.png",
-    "technologies": ["React", "Node.js", "MongoDB", "Express"],
-    "github": "https://aceit-eight.vercel.app/",
+    "technologies": ["React", "Node.js", "MongoDB"],
+    "github": "https://github.com/priyanshu00007",
     "demo": "https://aceit-eight.vercel.app/",
-    "featured": true
+    "accent": "from-emerald-500 to-teal-500"
   },
   {
     "id": "Codiverse",
     "title": "Codie Verse",
-    "description": "Codiverse is a tool that can be used for learning process and can learn learning and frameworks and provide projects ideas , exploring communities and recent events and jobs oppertnities.",
+    "description": "Hyper-connected developer ecosystem providing project insights, community events, and career opportunities.",
     "image": "codingverse.png",
-    "technologies": ["Next.js", "node js", "Tailwind CSS","json"],
-    "github": "https://codieverse.vercel.app/",
+    "technologies": ["Next.js", "Tailwind", "Node.js"],
+    "github": "https://github.com/priyanshu00007",
     "demo": "https://codieverse.vercel.app/",
-    "featured": false
-  },
-  {
-    "id": "Market",
-    "title": "coming soon",
-    "description":
-      "A fast, responsive, and scalable e-commerce platform built to deliver seamless online shopping experiences. Market enables users to browse products, add to cart, and place orders with ease. With a clean UI, dynamic routing, and a powerful backend, it mimics real-world online marketplaces.",
-    "image": "/placeholder.svg?height=300&width=500",
-    "technologies": ["Node.js", "Express", "Next js ","MongoDB"],
-    "github": "",
-    "demo": "",
-    "featured": false
+    "accent": "from-pink-500 to-indigo-500"
   }
 ]
 
 export default function Projects() {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const pin = gsap.fromTo(
+      sectionRef.current,
+      { translateX: 0 },
+      {
+        translateX: "-300vw",
+        ease: "none",
+        duration: 1,
+        scrollTrigger: {
+          trigger: triggerRef.current,
+          start: "top top",
+          end: "2000 top",
+          scrub: 0.6,
+          pin: true,
+        },
+      }
+    )
+    return () => { pin.kill() }
+  }, [])
+
   return (
-    <section id="projects" className="py-20 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-50/30 to-transparent dark:via-purple-900/10" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
-            Featured Projects
-          </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-            Showcasing innovative solutions that demonstrate technical excellence, scalability, and real-world impact.
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 xl:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
+    <section id="projects" className="overflow-hidden bg-background">
+      <div ref={triggerRef} className="relative">
+        <div ref={sectionRef} className="h-screen w-[400vw] flex flex-row relative">
+          {/* Intro Slide */}
+          <div className="h-screen w-[100vw] flex flex-col justify-center items-center px-10 relative">
+            <div className="absolute inset-0 dot-grid text-white/[0.02]" />
             <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="text-center relative z-10"
             >
-              <Card className="h-full overflow-hidden group bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 hover:bg-white/80 dark:hover:bg-slate-800/80 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/10">
-                <div className="relative overflow-hidden">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-bold tracking-widest uppercase mb-8">
+                <Layers size={14} />
+                Portfolio
+              </div>
+              <h2 className="text-4xl sm:text-7xl font-black mb-8 leading-[0.9] tracking-tighter text-white">
+                Selected <br />
+                <span className="text-primary italic">Works</span>.
+              </h2>
+              <div className="flex items-center justify-center gap-4 text-slate-400 font-medium">
+                <span>Scroll to explore</span>
+                <ArrowRight className="animate-bounce-x" size={20} />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Project Slides */}
+          {projects.map((project, index) => (
+            <div key={project.id} className="h-screen w-[85vw] flex justify-center items-center flex-shrink-0 px-10 relative">
+              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br ${project.accent} opacity-10 blur-[120px] rounded-full pointer-events-none`} />
+              
+              <Card className="max-w-6xl w-full h-[75vh] overflow-hidden group glass border-white/5 bg-white/[0.02] flex flex-col md:flex-row shadow-2xl relative">
+                <div className="md:w-3/5 h-2/3 md:h-full relative overflow-hidden">
                   <Image
-                    src={project.image || "/placeholder.svg"}
+                    src={project.image.startsWith("/") ? project.image : `/${project.image}`}
                     alt={project.title}
-                    width={500}
-                    height={300}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                    fill
+                    className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"
+                    priority
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <div className="absolute top-4 right-4">
-                    <Badge className="bg-blue-600/90 text-white backdrop-blur-sm">Featured</Badge>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent hidden md:block" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent md:hidden" />
                 </div>
-                <CardHeader>
-                  <CardTitle className="text-slate-900 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                
+                <div className="md:w-2/5 p-10 flex flex-col relative z-20">
+                  <div className="flex items-center justify-between mb-8">
+                    <Badge variant="outline" className="border-primary/30 text-primary py-1 px-3 rounded-full text-[10px] font-bold tracking-widest uppercase">
+                      Case Study
+                    </Badge>
+                    <span className="text-slate-600 font-mono text-sm leading-none">0{index + 1}</span>
+                  </div>
+                  
+                  <h3 className="text-4xl lg:text-5xl font-black mb-6 text-white group-hover:text-primary transition-colors leading-none tracking-tighter">
                     {project.title}
-                  </CardTitle>
-                  {/* <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">{project.metrics}</p> */}
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">{project.description}</p>
-                  <div className="flex flex-wrap gap-2">
+                  </h3>
+                  
+                  <p className="text-slate-400 mb-8 text-lg leading-relaxed font-medium">
+                    {project.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-10">
                     {project.technologies.map((tech) => (
-                      <Badge
+                      <span
                         key={tech}
-                        variant="outline"
-                        className="text-xs border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-400"
+                        className="text-xs font-bold text-slate-500 border-b border-white/10 pb-1"
                       >
                         {tech}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
-                </CardContent>
-                <CardFooter className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1 rounded-xl" asChild>
-                    <Link href={project.github}>
-                      <Github className="w-4 h-4 mr-2" />
-                      Code
-                    </Link>
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl"
-                    asChild
-                  >
-                    <Link href={project.demo}>
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Demo
-                    </Link>
-                  </Button>
-                </CardFooter>
+                  
+                  <div className="mt-auto flex flex-col sm:flex-row gap-4">
+                    <Button 
+                      className="bg-primary hover:bg-primary/90 text-white rounded-full h-14 px-8 font-bold transition-all shadow-lg shadow-primary/20"
+                      asChild
+                    >
+                      <Link href={project.demo} target="_blank">
+                        Live Preview <ExternalLink className="w-4 h-4 ml-2" />
+                      </Link>
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="rounded-full h-14 px-8 font-bold border-white/10 hover:bg-white/5 text-slate-300" 
+                      asChild
+                    >
+                      <Link href={project.github} target="_blank">
+                        <Github className="w-5 h-5 mr-2" /> Source
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <Button
-            variant="outline"
-            size="lg"
-            className="rounded-xl border-2 hover:bg-slate-50 dark:hover:bg-slate-800"
-            asChild
-          >
-            <Link href="/projects">
-              View All Projects
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </Button>
-        </motion.div>
       </div>
     </section>
   )
 }
+

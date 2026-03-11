@@ -7,7 +7,7 @@ import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
 import { Toaster } from "@/components/ui/toaster"
 import { CSPHeader } from "@/components/csp-header"
-import ChatApp from "./chatapp/page"
+
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
@@ -67,6 +67,10 @@ const jsonLd = {
   description:""
 }
 
+import SmoothScrollProvider from "@/components/providers/smooth-scroll-provider"
+import CustomCursor from "@/components/CustomCursor"
+import IntroLoader from "@/components/IntroLoader"
+
 export default function RootLayout({
   children,
 }: {
@@ -78,14 +82,18 @@ export default function RootLayout({
         <CSPHeader />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
-      <body className="font-segoe antialiased">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-            <Navigation />
-            <main className="relative">{children}</main>
-            <Footer />
-            <Toaster />
-          </div>
+      <body className="font-segoe antialiased selection:bg-primary/20 selection:text-primary">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+          <SmoothScrollProvider>
+            <IntroLoader />
+            <CustomCursor />
+            <div className="min-h-screen bg-background transition-colors duration-500">
+              <Navigation />
+              <main className="relative">{children}</main>
+              <Footer />
+              <Toaster />
+            </div>
+          </SmoothScrollProvider>
         </ThemeProvider>
       </body>
     </html>

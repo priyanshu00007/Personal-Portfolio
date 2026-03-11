@@ -7,7 +7,7 @@ const contactSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name is too long"),
   email: z.string().email("Invalid email address"),
   subject: z.string().min(1, "Subject is required").max(200, "Subject is too long"),
-  message: z.string().min(10, "Message must be at least 10 characters").max(2000, "Message is too long"),
+  message: z.string().min(2, "Message is required").max(5000, "Message is too long"),
 })
 
 // -------------------- Rate Limit --------------------
@@ -113,13 +113,21 @@ export async function POST(request: NextRequest) {
     })
 
     const mailOptions = {
-      from: `"${sanitizedData.name}" <${sanitizedData.email}>`,
-      to: process.env.RECEIVER_EMAIL,
-      subject: sanitizedData.subject,
-      text: `Name: ${sanitizedData.name}
-Email: ${sanitizedData.email}
+      from: `"${sanitizedData.name}" <${process.env.GMAIL_USER}>`,
+      replyTo: sanitizedData.email,
+      to: process.env.RECEIVER_EMAIL || "priyanshurathod518@gmail.com",
+      subject: `[New Portfolio Message] ${sanitizedData.subject}`,
+      text: `Someone reached out to you through your portfolio!
 
+Name: ${sanitizedData.name}
+Email: ${sanitizedData.email}
+Subject: ${sanitizedData.subject}
+
+Message:
 ${sanitizedData.message}
+
+---
+Sent via Priyanshu's Portfolio API
       `,
     }
 
@@ -140,7 +148,7 @@ ${sanitizedData.message}
     )
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: "Validation failed", details: error.errors }, { status: 400 })
+      return NextResponse.json({ error: "Validation failed", details: error.issues }, { status: 400 })
     }
 
     console.error("Server Error:", error)

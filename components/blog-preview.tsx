@@ -93,7 +93,7 @@ export default function BlogPreview() {
                   <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 mb-4">
                     <div className="flex items-center">
                       <Calendar className="w-4 h-4 mr-1" />
-                      {new Date(post.date).toLocaleDateString()}
+                      {new Date(post.date).toLocaleDateString("en-US")}
                     </div>
                     <div className="flex items-center">
                       <Clock className="w-4 h-4 mr-1" />

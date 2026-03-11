@@ -48,7 +48,7 @@ export default function ClientPage({ params }: Props) {
               <Badge variant="secondary">{post.category}</Badge>
               <div className="flex items-center text-sm text-muted-foreground">
                 <Calendar className="w-4 h-4 mr-1" />
-                {new Date(post.date).toLocaleDateString()}
+                {new Date(post.date).toLocaleDateString("en-US")}
               </div>
               <div className="flex items-center text-sm text-muted-foreground">
                 <Clock className="w-4 h-4 mr-1" />

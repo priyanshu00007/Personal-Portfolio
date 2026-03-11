@@ -1,7 +1,16 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Github, Linkedin, Mail, Twitter, Heart } from "lucide-react"
 
 export default function Footer() {
+  const [year, setYear] = useState("")
+
+  useEffect(() => {
+    setYear(new Date().getFullYear().toString())
+  }, [])
+
   return (
     <footer className="relative bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-t border-slate-200/50 dark:border-slate-700/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -75,7 +84,7 @@ export default function Footer() {
 
         <div className="border-t border-slate-200/50 dark:border-slate-700/50 mt-8 pt-8 text-center">
           <p className="text-slate-600 dark:text-slate-300 flex items-center justify-center space-x-2">
-            <span>&copy; {new Date().getFullYear()} Priyanshu. All rights reserved.</span>
+            <span>&copy; {year || "2024"} Priyanshu. All rights reserved.</span>
             <span>•</span>
             <span className="flex items-center space-x-1">
               <span>Built By Priyanshu</span>

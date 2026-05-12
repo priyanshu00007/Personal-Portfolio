@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { motion } from "framer-motion"
-import { Code2, Server, Database, Box, Terminal, Cpu, Globe, Layout, Smartphone } from "lucide-react"
+import { Server, Database, Box, Terminal, Cpu, Layout } from "lucide-react"
 
 const skillCategories = [
   {
@@ -46,9 +46,9 @@ const skillCategories = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-32 relative overflow-hidden bg-background">
+    <section id="skills" className="py-20 relative overflow-hidden bg-background">
       {/* Background decoration */}
-      <div className="absolute inset-0 dot-grid text-white/[0.02] -z-10" />
+      <div className="absolute inset-0 dot-grid text-foreground/[0.02] -z-10" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
@@ -56,16 +56,15 @@ export default function Skills() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-24"
+          className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-bold tracking-widest uppercase mb-6">
-            <Code2 size={14} />
             Technical Stack
           </div>
-          <h2 className="text-4xl sm:text-5xl font-black mb-8 leading-tight tracking-tighter text-white">
-            My <span className="text-primary italic">Expertise</span>.
+          <h2 className="text-4xl sm:text-5xl font-black dark:font-extrabold mb-8 leading-tight tracking-tighter text-foreground">
+            My <span className="text-primary dark:text-primary/90 italic">Expertise</span>.
           </h2>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             A specialized collection of tools and technologies I use to architect high-performance digital experiences.
           </p>
         </motion.div>
@@ -79,14 +78,14 @@ export default function Skills() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
             >
-              <Card className="h-full glass border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-500 group relative overflow-hidden">
+              <Card className="h-full glass border-border bg-card/50 hover:bg-card transition-all duration-500 group relative overflow-hidden">
                 <div className={`absolute top-0 left-0 w-2 h-full bg-gradient-to-b ${category.color} opacity-30 group-hover:opacity-100 transition-opacity`} />
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-3 text-white">
-                    <div className={`p-2 rounded-lg bg-gradient-to-br ${category.color} bg-opacity-10 text-white`}>
+                  <CardTitle className="flex items-center gap-3 text-foreground dark:text-foreground/95">
+                    <div className={`p-2 rounded-lg bg-gradient-to-br ${category.color} bg-opacity-10 dark:bg-opacity-20 text-foreground dark:text-foreground/90`}>
                       {category.icon}
                     </div>
-                    <span className="font-bold tracking-tight">{category.title}</span>
+                    <span className="font-bold tracking-tight text-foreground dark:text-foreground/95">{category.title}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -95,7 +94,7 @@ export default function Skills() {
                       <Badge
                         key={skill}
                         variant="outline"
-                        className="bg-white/[0.03] border-white/5 text-slate-300 hover:border-primary/50 hover:text-white transition-all duration-300 rounded-md py-1"
+                        className="bg-card/50 border-border text-muted-foreground dark:text-muted-foreground/90 hover:border-primary/50 hover:text-foreground dark:hover:text-foreground/95 transition-all duration-300 rounded-md py-1"
                       >
                         {skill}
                       </Badge>

@@ -39,7 +39,7 @@ export default function Navigation() {
       >
         <div className={`max-w-5xl mx-auto transition-all duration-500 ${
           scrolled 
-            ? "glass rounded-full px-6 py-3 shadow-2xl shadow-primary/10 border-white/5" 
+            ? "glass rounded-full px-6 py-3 shadow-2xl shadow-primary/10 border-border" 
             : "bg-transparent px-2 py-4"
         }`}>
           <div className="flex justify-between items-center">
@@ -47,10 +47,8 @@ export default function Navigation() {
               href="/"
               className="text-xl font-black tracking-tighter flex items-center gap-2 group"
             >
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white rotate-12 group-hover:rotate-0 transition-transform duration-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]">
-                P
-              </div>
-              <span className="text-white hidden sm:block">Priyanshu.</span>
+              
+              <span className="text-foreground hidden sm:block">Priyanshu.</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -61,7 +59,7 @@ export default function Navigation() {
                   href={item.href}
                   className="px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase transition-all duration-300 relative group overflow-hidden"
                 >
-                  <span className="relative z-10 text-slate-400 group-hover:text-white transition-colors">
+                  <span className="relative z-10 text-muted-foreground group-hover:text-foreground transition-colors">
                     {item.name}
                   </span>
                   <motion.div
@@ -70,7 +68,7 @@ export default function Navigation() {
                   />
                 </a>
               ))}
-              <div className="ml-4 h-6 w-px bg-white/10 mx-2" />
+              <div className="ml-4 h-6 w-px bg-border mx-2" />
               <ThemeToggle />
             </nav>
 
@@ -79,11 +77,11 @@ export default function Navigation() {
               <ThemeToggle />
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="w-10 h-10 rounded-full glass border-white/10 flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-white/5"
+                className="w-10 h-10 rounded-full glass border-border flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-accent"
                 aria-label="Open menu"
               >
-                <div className="w-5 h-0.5 bg-white rounded-full" />
-                <div className="w-3 h-0.5 bg-white rounded-full self-end mr-2.5" />
+                <div className="w-5 h-0.5 bg-foreground rounded-full" />
+                <div className="w-3 h-0.5 bg-foreground rounded-full self-end mr-2.5" />
               </button>
             </div>
           </div>
@@ -99,13 +97,13 @@ export default function Navigation() {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-2xl md:hidden overflow-hidden"
           >
-            <div className="absolute inset-0 dot-grid text-white/[0.03]" />
+            <div className="absolute inset-0 dot-grid text-foreground/[0.03]" />
             <div className="relative z-10 h-full flex flex-col p-8">
               <div className="flex justify-between items-center mb-20">
-                <span className="text-xl font-black tracking-tighter text-white">MENU.</span>
+                <span className="text-xl font-black tracking-tighter text-foreground">MENU.</span>
                 <button
                   onClick={() => setSidebarOpen(false)}
-                  className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center text-white"
+                  className="w-12 h-12 rounded-full glass border-border flex items-center justify-center text-foreground"
                 >
                   <X size={24} />
                 </button>
@@ -121,7 +119,7 @@ export default function Navigation() {
                   >
                     <a
                       href={item.href}
-                      className="text-5xl font-black tracking-tighter text-slate-800 hover:text-primary transition-colors block"
+                      className="text-5xl font-black tracking-tighter text-muted-foreground hover:text-primary transition-colors block"
                       onClick={() => setSidebarOpen(false)}
                     >
                       {item.name}.
@@ -130,11 +128,11 @@ export default function Navigation() {
                 ))}
               </nav>
 
-              <div className="mt-auto pt-10 border-t border-white/5">
-                <p className="text-xs font-bold tracking-[0.3em] uppercase text-slate-500 mb-6">Socials</p>
+              <div className="mt-auto pt-10 border-t border-border">
+                <p className="text-xs font-bold tracking-[0.3em] uppercase text-muted-foreground mb-6">Socials</p>
                 <div className="flex gap-8">
                   {["Github", "LinkedIn", "Twitter"].map((social) => (
-                    <a key={social} href="#" className="text-sm font-bold text-white hover:text-primary transition-colors">
+                    <a key={social} href="#" className="text-sm font-bold text-foreground hover:text-primary transition-colors">
                       {social}
                     </a>
                   ))}

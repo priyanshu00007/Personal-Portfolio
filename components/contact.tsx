@@ -59,9 +59,9 @@ export default function Contact() {
     <section id="contact" className="py-32 relative overflow-hidden bg-background">
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 dot-grid text-white/[0.02]" />
+        <div className="absolute inset-0 dot-grid text-foreground/[0.02]" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] opacity-30" />
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-border/20 to-transparent" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -79,10 +79,10 @@ export default function Contact() {
                 <MessageSquare size={12} />
                 Get In Touch
               </div>
-              <h2 className="text-5xl md:text-7xl font-black mb-8 leading-[0.9] tracking-tighter text-white">
+              <h2 className="text-5xl md:text-7xl font-black mb-8 leading-[0.9] tracking-tighter text-foreground">
                 Let's <span className="text-primary italic">connect</span> and create.
               </h2>
-              <p className="text-slate-400 text-lg mb-12 max-w-md leading-relaxed font-medium">
+              <p className="text-muted-foreground text-lg mb-12 max-w-md leading-relaxed font-medium">
                 Whether you have a groundbreaking idea or just want to chat about the latest in tech, my inbox is always open.
               </p>
 
@@ -100,19 +100,19 @@ export default function Contact() {
                     transition={{ delay: 0.1 * i }}
                     className="flex items-center gap-6 group hover:translate-x-2 transition-transform duration-300"
                   >
-                    <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 shadow-lg">
+                    <div className="w-12 h-12 rounded-2xl bg-card/50 border border-border flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 shadow-lg">
                       {item.icon}
                     </div>
                     <div>
-                      <div className="text-[10px] uppercase tracking-widest font-bold text-slate-500 mb-0.5">{item.label}</div>
-                      <div className="text-white font-bold group-hover:text-primary transition-colors">{item.value}</div>
+                      <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-0.5">{item.label}</div>
+                      <div className="text-foreground font-bold group-hover:text-primary transition-colors">{item.value}</div>
                     </div>
                   </motion.a>
                 ))}
               </div>
 
-              <div className="pt-8 border-t border-white/5">
-                <div className="text-[10px] uppercase tracking-widest font-bold text-slate-600 mb-6">Social Ecosystem</div>
+              <div className="pt-8 border-t border-border">
+                <div className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mb-6">Social Ecosystem</div>
                 <div className="flex gap-4">
                   {[
                     { icon: <Github size={20} />, href: "https://github.com/priyanshu00007" },
@@ -123,7 +123,7 @@ export default function Contact() {
                     <a
                       key={i}
                       href={social.href}
-                      className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/5 flex items-center justify-center text-slate-400 hover:text-white hover:bg-primary transition-all duration-300"
+                      className="w-10 h-10 rounded-xl bg-card/50 border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-primary transition-all duration-300"
                     >
                       {social.icon}
                     </a>
@@ -145,7 +145,7 @@ export default function Contact() {
               {/* Decorative Glow */}
               <div className="absolute -inset-4 bg-primary/20 rounded-[40px] blur-3xl opacity-20 pointer-events-none" />
               
-              <Card className="glass-morphism border-white/5 bg-white/[0.02] overflow-hidden rounded-[32px] relative z-10 shadow-2xl">
+              <Card className="glass-morphism border-border bg-card/30 overflow-hidden rounded-[32px] relative z-10 shadow-2xl">
                 <div className="p-8 sm:p-12">
                   <AnimatePresence mode="wait">
                     {isSubmitted ? (
@@ -158,14 +158,14 @@ export default function Contact() {
                         <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center text-primary mx-auto mb-8 shadow-[0_0_30px_rgba(139,92,246,0.2)]">
                           <CheckCircle size={48} className="animate-bounce" />
                         </div>
-                        <h3 className="text-3xl font-black text-white mb-4 tracking-tight">Transmission Received.</h3>
-                        <p className="text-slate-400 font-medium max-w-sm mx-auto mb-10">
+                        <h3 className="text-3xl font-black text-foreground mb-4 tracking-tight">Transmission Received.</h3>
+                        <p className="text-muted-foreground font-medium max-w-sm mx-auto mb-10">
                           Thank you for reaching out. I'll deep dive into your request and get back to you within 24 cycles (hours).
                         </p>
                         <Button
                           variant="outline"
                           onClick={() => setIsSubmitted(false)}
-                          className="rounded-full px-10 h-12 border-white/10 hover:bg-white/5 font-bold"
+                          className="rounded-full px-10 h-12 border-border hover:bg-accent font-bold"
                         >
                           Send another message
                         </Button>
@@ -174,7 +174,7 @@ export default function Contact() {
                       <form onSubmit={handleSubmit} className="space-y-8">
                         <div className="grid sm:grid-cols-2 gap-8">
                           <div className="space-y-3">
-                            <Label htmlFor="name" className="text-[10px] uppercase tracking-widest font-black text-slate-500 ml-1">Identity</Label>
+                            <Label htmlFor="name" className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">Identity</Label>
                             <div className="relative group">
                               <Input
                                 id="name"
@@ -183,12 +183,12 @@ export default function Contact() {
                                 placeholder="Priyanshu Rathod"
                                 value={contactFormData.name}
                                 onChange={(e) => handleInputChange("name", e.target.value)}
-                                className="h-14 bg-white/[0.03] border-white/5 focus:border-primary/50 focus:ring-primary/20 rounded-2xl transition-all pl-5 placeholder:text-slate-600 font-medium text-white"
+                                className="h-14 bg-card/50 border-border focus:border-primary/50 focus:ring-primary/20 rounded-2xl transition-all pl-5 placeholder:text-muted-foreground font-medium text-foreground"
                               />
                             </div>
                           </div>
                           <div className="space-y-3">
-                            <Label htmlFor="email" className="text-[10px] uppercase tracking-widest font-black text-slate-500 ml-1">Communication Channel</Label>
+                            <Label htmlFor="email" className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">Communication Channel</Label>
                             <div className="relative group">
                               <Input
                                 id="email"
@@ -198,14 +198,14 @@ export default function Contact() {
                                 placeholder="hello@example.com"
                                 value={contactFormData.email}
                                 onChange={(e) => handleInputChange("email", e.target.value)}
-                                className="h-14 bg-white/[0.03] border-white/5 focus:border-primary/50 focus:ring-primary/20 rounded-2xl transition-all pl-5 placeholder:text-slate-600 font-medium text-white"
+                                className="h-14 bg-card/50 border-border focus:border-primary/50 focus:ring-primary/20 rounded-2xl transition-all pl-5 placeholder:text-muted-foreground font-medium text-foreground"
                               />
                             </div>
                           </div>
                         </div>
                         
                         <div className="space-y-3">
-                          <Label htmlFor="subject" className="text-[10px] uppercase tracking-widest font-black text-slate-500 ml-1">Objective</Label>
+                          <Label htmlFor="subject" className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">Objective</Label>
                           <Input
                             id="subject"
                             name="subject"
@@ -218,7 +218,7 @@ export default function Contact() {
                         </div>
 
                         <div className="space-y-3">
-                          <Label htmlFor="message" className="text-[10px] uppercase tracking-widest font-black text-slate-500 ml-1">The Message</Label>
+                          <Label htmlFor="message" className="text-[10px] uppercase tracking-widest font-black text-muted-foreground ml-1">The Message</Label>
                           <Textarea
                             id="message"
                             name="message"
@@ -227,7 +227,7 @@ export default function Contact() {
                             placeholder="Tell me about your vision, the scope, or just say hello..."
                             value={contactFormData.message}
                             onChange={(e) => handleInputChange("message", e.target.value)}
-                            className="bg-white/[0.03] border-white/5 focus:border-primary/50 focus:ring-primary/20 rounded-2xl transition-all p-5 placeholder:text-slate-600 font-medium text-white resize-none"
+                            className="bg-card/50 border-border focus:border-primary/50 focus:ring-primary/20 rounded-2xl transition-all p-5 placeholder:text-muted-foreground font-medium text-foreground resize-none"
                           />
                         </div>
 
@@ -237,7 +237,7 @@ export default function Contact() {
                         >
                           <Button
                             type="submit"
-                            className="w-full h-16 bg-primary hover:bg-primary/90 text-white rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all shadow-[0_10px_30px_rgba(139,92,246,0.3)] group overflow-hidden relative"
+                            className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl font-black text-sm uppercase tracking-[0.2em] transition-all shadow-[0_10px_30px_rgba(139,92,246,0.3)] group overflow-hidden relative"
                             disabled={isSubmitting}
                           >
                             <span className="relative z-10 flex items-center justify-center gap-3">

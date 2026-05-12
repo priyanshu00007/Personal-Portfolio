@@ -1,178 +1,189 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Code, Database, Globe, Smartphone, Award, Users, Brain, Zap, Target, Rocket } from "lucide-react"
-import { motion, useScroll, useTransform, useSpring } from "framer-motion"
-import { useRef, ReactNode } from "react"
+import { CardContent } from "@/components/ui/card"
+import { Code, Globe, Award, Users, Brain, Target, Rocket, Sparkles, MoveRight } from "lucide-react"
+import { motion, useInView } from "framer-motion"
+import { useRef, ReactNode, useState, MouseEvent, useEffect } from "react"
 
 const achievements = [
-  {
-    icon: <Award className="h-6 w-6" />,
-    title: "Expertise",
-    value: "MERN Stack",
-    description: "Full-stack architecture",
-  },
-  {
-    icon: <Users className="h-6 w-6" />,
-    title: "Projects",
-    value: "10+",
-    description: "Delivered successfully",
-  },
-  {
-    icon: <Brain className="h-6 w-6" />,
-    title: "AI Integration",
-    value: "Python",
-    description: "ML & Data Science",
-  },
+  { icon: <Award />, title: "Specialization", value: "MERN Stack" },
+  { icon: <Users />, title: "Impact", value: "10+" },
+  { icon: <Brain />, title: "Intermediate", value: "AI/ML" },
 ]
 
 const services = [
   {
-    icon: <Globe className="h-8 w-8" />,
-    title: "Full Stack Development",
-    description: "Building robust, scalable applications using MongoDB, Express, React, and Node.js.",
-    accent: "from-blue-500 to-cyan-500"
+    icon: <Globe />,
+    title: "Full Stack Architecture",
+    description: "Designing end-to-end solutions with the MERN stack, ensuring high scalability and seamless UX.",
+    accent: "from-blue-500/20"
   },
   {
-    icon: <Brain className="h-8 w-8" />,
-    title: "AI & Data Solutions",
-    description: "Leveraging Python and machine learning to derive insights and automate processes.",
-    accent: "from-purple-500 to-pink-500"
+    icon: <Brain />,
+    title: "AI Integration",
+    description: "Infusing web platforms with intelligence using Python, NLP, and Predictive Analysis.",
+    accent: "from-purple-500/20"
   },
   {
-    icon: <Code className="h-8 w-8" />,
-    title: "Performance Optimization",
-    description: "Streamlining code and architecture for maximum speed and efficiency.",
-    accent: "from-orange-500 to-yellow-500"
+    icon: <Code />,
+    title: "Technical Excellence",
+    description: "Clean code, performance-first architecture, and modern deployment pipelines.",
+    accent: "from-orange-500/20"
   },
 ]
 
-interface ScrollRevealProps {
-  children: ReactNode;
+// --- Responsive Spotlight Card ---
+const SpotlightCard = ({ children, className }: { children: ReactNode, className?: string }) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const [opacity, setOpacity] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(window.matchMedia("(max-width: 768px)").matches)
+  }, [])
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (isMobile) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top })
+  }
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => !isMobile && setOpacity(1)}
+      onMouseLeave={() => !isMobile && setOpacity(0)}
+      className={`relative overflow-hidden rounded-[2rem] border border-border bg-card/50 p-px transition-colors duration-500 ${className}`}
+    >
+      {!isMobile && (
+        <div
+          className="pointer-events-none absolute -inset-px transition duration-300"
+          style={{
+            background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(139,92,246,0.15), transparent 40%)`,
+            opacity,
+          }}
+        />
+      )}
+      {children}
+    </div>
+  )
 }
 
-const ScrollRevealLine = ({ children }: ScrollRevealProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 80%", "start 40%"],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 1], [0.15, 1]);
-  const scale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], [20, 0]);
-
+const RevealText = ({ children }: { children: ReactNode }) => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-5%" })
+  
   return (
     <motion.div
       ref={ref}
-      style={{ opacity, scale, y }}
-      className="mb-8"
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
-  );
-};
+  )
+}
 
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null)
   
   return (
-    <section id="about" ref={containerRef} className="py-40 relative bg-background">
-      <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+    <section id="about" ref={containerRef} className="py-20 lg:py-40 relative bg-background overflow-hidden theme-transition">
+      {/* Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-20" />
+      <div className="absolute inset-0 dot-grid text-foreground/[0.02] -z-10" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-start">
-          <div className="sticky top-40 h-fit">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] font-black tracking-[0.2em] uppercase mb-10"
-            >
-              <Target size={14} className="animate-pulse" />
-              Philosophy
-            </motion.div>
-
-            <div className="relative">
-              <ScrollRevealLine>
-                <h2 className="text-3xl sm:text-6xl font-black mb-8 leading-[0.9] tracking-tighter text-white">
-                  Crafting <span className="text-primary italic">digital</span> masterpieces.
-                </h2>
-              </ScrollRevealLine>
+      <div className="max-w-7xl mx-auto px-5 sm:px-10 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          
+          {/* Left Column */}
+          <div className="lg:sticky lg:top-24 space-y-8 lg:space-y-12">
+            <div>
+              <motion.span 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-6"
+              >
+                <Sparkles size={12} className="shrink-0" />
+                About Priyanshu
+              </motion.span>
               
-              <div className="space-y-12">
-                <ScrollRevealLine>
-                  <p className="text-slate-200 text-2xl lg:text-3xl font-medium leading-tight max-w-xl">
-                    I am a dedicated MERN Stack Developer with a passion for building high-performance, accessible, and visually stunning web applications.
-                  </p>
-                </ScrollRevealLine>
-                
-                <ScrollRevealLine>
-                  <p className="text-slate-400 text-xl lg:text-2xl font-medium leading-tight max-w-xl">
-                    Beyond standard development, I explore the intersections of AI and web technology, integrating machine learning models with modern interfaces.
-                  </p>
-                </ScrollRevealLine>
-              </div>
+              <RevealText>
+                <h2 className="text-responsive-xl font-black text-foreground leading-[0.9] tracking-tighter mb-6">
+                  Engineered <br /> 
+                  <span className="text-primary italic">Precision.</span> <br className="hidden sm:block" />
+                  Digital Soul.
+                </h2>
+              </RevealText>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-24">
-                {achievements.map((item, i) => (
+              <RevealText>
+                <p className="text-muted-foreground text-responsive-base font-light leading-relaxed max-w-xl">
+                  I bridge the gap between <span className="text-foreground font-medium">complex backend logic</span> and <span className="text-foreground font-medium">breath-taking interfaces</span>. 
+                </p>
+              </RevealText>
+            </div>
+
+            {/* Achievement Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 lg:gap-6">
+              {achievements.map((item, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="p-4 rounded-2xl bg-card/30 border-border/50 group"
+                >
+                  <div className="text-2xl sm:text-3xl font-black text-foreground mb-1 group-hover:text-primary transition-colors">{item.value}</div>
+                  <div className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground">{item.title}</div>
                   <motion.div 
-                    key={i} 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.2 + i * 0.1 }}
-                    className="space-y-2 border-l border-white/10 pl-4 py-2"
-                  >
-                    <div className="text-3xl font-black text-white leading-none">{item.value}</div>
-                    <div className="text-[10px] uppercase tracking-widest font-bold text-primary">{item.title}</div>
-                  </motion.div>
-                ))}
-              </div>
+                    initial={{ width: 0 }}
+                    whileInView={{ width: "2rem" }}
+                    className="h-0.5 bg-primary/40 mt-2" 
+                  />
+                </motion.div>
+              ))}
             </div>
           </div>
 
-          <div className="grid gap-10 mt-10 lg:mt-0">
+          {/* Right Column: Cards */}
+          <div className="space-y-4 lg:space-y-6">
             {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.15 }}
-                viewport={{ once: true }}
-              >
-                <Card className="group glass border-white/5 bg-white/[0.02] hover:bg-white/[0.04] transition-all duration-700 overflow-hidden relative border-l-2 hover:border-l-primary shadow-2xl">
-                  <div className={`absolute top-0 right-0 w-48 h-48 bg-gradient-to-br ${service.accent} opacity-0 group-hover:opacity-10 blur-3xl transition-opacity duration-700`} />
-                  <CardContent className="p-10 flex flex-col md:flex-row items-start gap-8">
-                    <div className={`p-5 rounded-3xl bg-gradient-to-br ${service.accent} bg-opacity-10 text-white shrink-0 group-hover:scale-110 transition-transform duration-700 shadow-xl`}>
-                      {service.icon}
-                    </div>
-                    <div>
-                      <h4 className="text-2xl font-black mb-4 text-white group-hover:text-primary transition-colors tracking-tight">{service.title}</h4>
-                      <p className="text-slate-400 text-lg leading-relaxed font-medium">{service.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <SpotlightCard key={index}>
+                <CardContent className="p-8 lg:p-12 relative z-10">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${service.accent} to-transparent flex items-center justify-center text-foreground mb-6`}>
+                    {service.icon}
+                  </div>
+                  <h4 className="text-xl lg:text-2xl font-bold text-foreground mb-3 tracking-tight">{service.title}</h4>
+                  <p className="text-muted-foreground text-base lg:text-lg leading-relaxed mb-6 font-light">
+                    {service.description}
+                  </p>
+                  <div className="flex items-center gap-2 text-primary text-xs font-bold lg:opacity-0 lg:group-hover:opacity-100 transition-all lg:-translate-x-2 lg:group-hover:translate-x-0">
+                    Explore Solution <MoveRight size={14} />
+                  </div>
+                </CardContent>
+              </SpotlightCard>
             ))}
-            
+
+            {/* CTA Box */}
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              className="mt-10 p-10 rounded-3xl border border-dashed border-white/10 flex items-center justify-between group"
+              whileTap={{ scale: 0.98 }}
+              className="p-px rounded-[2rem] bg-gradient-to-r from-primary/20 via-purple-500/20 to-blue-500/20 mt-8"
             >
-              <div>
-                <h5 className="text-white font-black text-xl mb-1 group-hover:text-primary transition-colors">Open for Collaboration</h5>
-                <p className="text-slate-500 text-sm font-medium italic">Let's build something extraordinary together.</p>
-              </div>
-              <div className="w-12 h-12 rounded-full glass flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                <Rocket size={20} className="group-hover:-translate-y-1 transition-transform" />
+              <div className="bg-card rounded-[calc(2rem-1px)] p-6 sm:p-8 flex items-center justify-between group theme-transition">
+                <div className="pr-4">
+                  <h5 className="text-foreground font-bold text-base sm:text-lg">Next-Gen Project?</h5>
+                  <p className="text-muted-foreground text-xs sm:text-sm italic">Available for collaboration</p>
+                </div>
+                <button className="h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground shrink-0 shadow-[0_0_15px_rgba(var(--primary),0.3)] hover-scale">
+                  <Rocket size={18} fill="currentColor" />
+                </button>
               </div>
             </motion.div>
           </div>
+
         </div>
       </div>
     </section>
   )
 }
-

@@ -1,206 +1,172 @@
 "use client"
 
 import { useRef, useEffect, useState } from "react"
-import { motion, useScroll, useTransform, useInView } from "framer-motion"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ExternalLink, Github, ArrowRight, Layers, MoveRight } from "lucide-react"
+import { motion, useInView } from "framer-motion"
+import { ExternalLink, Github, ArrowRight, Layers, Sparkles } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-gsap.registerPlugin(ScrollTrigger)
+// Register GSAP Plugin outside component lifecycle
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
+// Upgraded data with Images, Colors, and dynamic glowing accents
 const projects = [
-   {
-    "id": "Ecommerce Website",
-    "title": "Ambrosia Sweets",
-    "description": "A high-end e-commerce experience for traditional Indian sweets, focusing on smooth transitions and a premium aesthetic.",
-    "image": "amb.png",
-    "technologies": ["Next.js", "TypeScript", "Tailwind"],
-    "github": "https://github.com/priyanshu00007",
-    "demo": "https://ambrosia-sweets.vercel.app/",
-    "accent": "from-orange-500 to-red-500"
+  {
+    id: "Creative agency",
+    title: "Creative Ops",
+    description: "A creative agency website that showcases the company's portfolio, services, and team. Built with Next.js and TypeScript, it features a modern design, smooth animations, and responsive layouts. The backend is powered by Express and Node.js, ensuring fast performance and scalability.",
+    technologies: ["React.js", "TypeScript", "Express", "Node.js", "Framer Motion"],
+    github: "https://creative-ops-six.vercel.app/",
+    demo: "https://creative-ops-six.vercel.app/",
+    featured: true,
+    image: "creative.png",
+    accent: "from-blue-500 to-cyan-500",
+    glow: "rgba(59, 130, 246, 0.2)"
   },
   {
-    "id": "Chatapp",
-    "title": "Nexus AI Chat",
-    "description": "Real-time intelligent messaging platform integrated with Gemini AI for contextual assistance and multi-modal interactions.",
-    "image": "chatapp.png",
-    "technologies": ["React", "Python", "Socket.io", "Gemini"],
-    "github": "https://github.com/priyanshu00007",
-    "demo": "https://nexus-ai-chat.vercel.app/",
-    "accent": "from-blue-500 to-purple-500"
+    id: "Lms platform",
+    title: "Edu-Platform",
+    description: "An online learning management system (LMS) providing a comprehensive platform for educators and students. Built with React and Python, it offers features like course creation, student enrollment, progress tracking, and interactive quizzes. Powered by Gemini AI.",
+    technologies: ["React", "Python", "GSAP", "Node.js", "Gemini AI", "Express"],
+    github: "https://edu-platform-spark-uni.vercel.app/",
+    demo: "https://edu-platform-spark-uni.vercel.app/",
+    featured: true,
+    image: "edu.png",
+    accent: "from-orange-500 to-rose-500",
+    glow: "rgba(249, 115, 22, 0.2)"
   },
   {
-    "id": "Learning Platform",
-    "title": "Ace It",
-    "description": "An immersive educational platform with interactive learning paths and progress tracking for modern tech stacks.",
-    "image": "aceit.png",
-    "technologies": ["React", "Node.js", "MongoDB"],
-    "github": "https://github.com/priyanshu00007",
-    "demo": "https://aceit-eight.vercel.app/",
-    "accent": "from-emerald-500 to-teal-500"
-  },
-  {
-    "id": "Codiverse",
-    "title": "Codie Verse",
-    "description": "Hyper-connected developer ecosystem providing project insights, community events, and career opportunities.",
-    "image": "codingverse.png",
-    "technologies": ["Next.js", "Tailwind", "Node.js"],
-    "github": "https://github.com/priyanshu00007",
-    "demo": "https://codieverse.vercel.app/",
-    "accent": "from-pink-500 to-indigo-500"
+    id: "aiassitant",
+    title: "Spark AI Assistant",
+    description: "A comprehensive web application platform featuring AI-powered whiteboards, collaborative tools, real-time analytics, and modern user experiences designed for remote engineering teams.",
+    technologies: ["Next.js", "MongoDB", "Clerk Auth", "Tldraw", "Zustand"],
+    github: "https://spark-lemon.vercel.app/",
+    demo: "https://spark-lemon.vercel.app/",
+    featured: false,
+    image: "spark.png",
+    accent: "from-emerald-500 to-teal-500",
+    glow: "rgba(16, 185, 129, 0.2)"
   }
 ]
 
+// Cinematic Text Reveal Component
+const RevealText = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: "-10%" })
+  return (
+    <motion.div ref={ref} initial={{ opacity: 0, y: 30, filter: "blur(8px)" }} animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}} transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}>
+      {children}
+    </motion.div>
+  )
+}
+
 export default function Projects() {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const triggerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const sliderRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
 
+  // Responsive Check
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024) // Trigger horizontal scroll only on LG screens
     checkMobile()
     window.addEventListener('resize', checkMobile)
-    
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // Robust GSAP Horizontal Scroll Setup
   useEffect(() => {
-    if (isMobile) return
+    if (isMobile || !containerRef.current || !sliderRef.current) return
 
-    const pin = gsap.fromTo(
-      sectionRef.current,
-      { translateX: 0 },
-      {
-        translateX: "-300vw",
+    let ctx = gsap.context(() => {
+      let panels = gsap.utils.toArray(".project-panel")
+      
+      gsap.to(panels, {
+        xPercent: -100 * (panels.length - 1),
         ease: "none",
-        duration: 1,
         scrollTrigger: {
-          trigger: triggerRef.current,
-          start: "top top",
-          end: "2000 top",
-          scrub: 0.6,
+          trigger: containerRef.current,
           pin: true,
-        },
-      }
-    )
-    return () => { pin.kill() }
+          scrub: 1, // Smooth scrubbing
+          snap: 1 / (panels.length - 1), // Snaps perfectly to each project
+          end: () => "+=" + sliderRef.current!.offsetWidth,
+        }
+      })
+    }, containerRef)
+
+    return () => ctx.revert() // Crucial for React 18 / Next.js Strict Mode
   }, [isMobile])
 
-  // Mobile responsive version
+  // Global Noise Texture
+  const NoiseTexture = () => (
+    <svg className="pointer-events-none fixed inset-0 z-[100] h-full w-full opacity-[0.15] mix-blend-overlay">
+      <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" /></filter>
+      <rect width="100%" height="100%" filter="url(#noise)" />
+    </svg>
+  )
+
+  // --- MOBILE / TABLET LAYOUT (Vertical Scroll) ---
   if (isMobile) {
     return (
-      <section id="projects" className="py-16 relative bg-background overflow-hidden theme-transition">
-        {/* Background decoration */}
-        <div className="absolute inset-0 dot-grid text-foreground/[0.02]" />
+      <section id="projects" className="py-24 relative bg-background overflow-hidden selection:bg-primary/20 selection:text-primary">
+        <NoiseTexture />
+        <div className="absolute inset-0 dot-grid text-foreground/[0.02] -z-10" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-[10px] font-bold tracking-[0.2em] uppercase mb-6">
-              <Layers size={12} />
-              Portfolio
-            </div>
-            <h2 className="text-4xl sm:text-5xl font-black mb-6 leading-[0.9] tracking-tighter text-foreground">
-              Selected <br />
-              <span className="text-primary italic">Works</span>.
-            </h2>
-            <p className="text-muted-foreground text-lg max-w-md mx-auto leading-relaxed">
-              Explore my latest projects and creative solutions
-            </p>
-          </motion.div>
+        <div className="max-w-7xl mx-auto px-5 relative z-10">
+          <div className="text-center mb-20">
+            <RevealText delay={0.1}>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 text-primary text-[11px] font-bold tracking-[0.2em] uppercase mb-8 shadow-sm">
+                <Layers size={14} className="shrink-0" />
+                Portfolio
+              </div>
+            </RevealText>
+            <RevealText delay={0.2}>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 leading-[1.1] tracking-tight text-foreground">
+                Selected <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent italic pr-2">Works.</span>
+              </h2>
+            </RevealText>
+          </div>
 
-          {/* Project Cards */}
-          <div className="space-y-8">
+          <div className="space-y-16">
             {projects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="relative"
-              >
-                <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br ${project.accent} opacity-5 blur-[80px] rounded-full pointer-events-none`} />
-                
-                <Card className="glass border-border bg-card/50 overflow-hidden shadow-2xl relative">
-                  {/* Project Image */}
-                  <div className="relative h-48 sm:h-64 overflow-hidden">
-                    <Image
-                      src={project.image.startsWith("/") ? project.image : `/${project.image}`}
-                      alt={project.title}
-                      fill
-                      className="object-cover scale-105 group-hover:scale-100 transition-transform duration-700 ease-out"
-                      priority={index < 2}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/50 to-transparent" />
-                    
-                    {/* Badge overlay */}
-                    <div className="absolute top-4 right-4">
-                      <Badge variant="outline" className="border-primary/30 text-primary py-1 px-3 rounded-full text-[10px] font-bold tracking-widest uppercase bg-background/80 backdrop-blur-sm">
-                        0{index + 1}
-                      </Badge>
+              <RevealText key={project.id} delay={0.1}>
+                <div className="group relative rounded-[2rem] border border-border/50 bg-card/20 backdrop-blur-md overflow-hidden flex flex-col hover:border-border hover:bg-card/40 hover:shadow-2xl hover:shadow-background/20 transition-all duration-500">
+                  {/* Image */}
+                  <div className="relative h-64 sm:h-80 w-full overflow-hidden border-b border-border/50">
+                    <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent opacity-80" />
+                    <div className="absolute top-4 right-4 bg-background/80 backdrop-blur-md border border-border px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest uppercase text-primary">
+                      0{index + 1}
                     </div>
                   </div>
                   
-                  {/* Project Content */}
-                  <CardContent className="p-6 sm:p-8">
-                    <h3 className="text-2xl sm:text-3xl font-black mb-4 text-foreground group-hover:text-primary transition-colors leading-tight tracking-tight">
-                      {project.title}
-                    </h3>
+                  {/* Content */}
+                  <div className="p-6 sm:p-8 relative">
+                    <div className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-[60px] pointer-events-none -z-10 bg-gradient-to-br ${project.accent} opacity-20`} />
+                    <h3 className="text-2xl sm:text-3xl font-black mb-4 text-foreground leading-tight tracking-tight">{project.title}</h3>
+                    <p className="text-muted-foreground mb-8 text-sm sm:text-base leading-relaxed font-light">{project.description}</p>
                     
-                    <p className="text-muted-foreground mb-6 text-sm sm:text-base leading-relaxed">
-                      {project.description}
-                    </p>
-                    
-                    {/* Technologies */}
-                    <div className="flex flex-wrap gap-2 mb-6">
+                    <div className="flex flex-wrap gap-2 mb-8">
                       {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-[10px] font-bold text-muted-foreground border border-border px-2 py-1 rounded-md"
-                        >
+                        <span key={tech} className="px-3 py-1.5 rounded-lg border border-border/50 bg-background/50 text-xs font-medium text-muted-foreground backdrop-blur-sm cursor-default">
                           {tech}
                         </span>
                       ))}
                     </div>
                     
-                    {/* Action Buttons */}
-                    <div className="flex gap-3 flex-col sm:flex-row">
-                      <Button 
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full h-12 px-6 font-bold transition-all shadow-lg shadow-primary/20 flex-1"
-                        asChild
-                      >
-                        <Link href={project.demo} target="_blank" className="flex items-center justify-center gap-2">
-                          Live Demo <ExternalLink className="w-4 h-4" />
-                        </Link>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="rounded-full h-12 px-6 font-bold border-border hover:bg-accent text-muted-foreground flex-1" 
-                        asChild
-                      >
-                        <Link href={project.github} target="_blank" className="flex items-center justify-center gap-2">
-                          <Github className="w-4 h-4" /> Code
-                        </Link>
-                      </Button>
+                    <div className="flex gap-4 flex-col sm:flex-row">
+                      <Link href={project.demo} target="_blank" className="flex-1 flex items-center justify-center gap-2 bg-foreground text-background hover:bg-primary hover:text-primary-foreground h-12 rounded-full font-bold transition-all duration-300">
+                        Live Demo <ExternalLink className="w-4 h-4" />
+                      </Link>
+                      <Link href={project.github} target="_blank" className="flex-1 flex items-center justify-center gap-2 bg-transparent border border-border hover:bg-muted text-foreground h-12 rounded-full font-bold transition-all duration-300">
+                        <Github className="w-4 h-4" /> Source
+                      </Link>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                  </div>
+                </div>
+              </RevealText>
             ))}
           </div>
         </div>
@@ -208,106 +174,91 @@ export default function Projects() {
     )
   }
 
-  // Desktop horizontal scroll version
+  // --- DESKTOP LAYOUT (GSAP Horizontal Scroll) ---
   return (
-    <section id="projects" className="overflow-hidden bg-background theme-transition">
-      <div ref={triggerRef} className="relative">
-        <div ref={sectionRef} className="h-screen w-[400vw] flex flex-row relative">
-          {/* Intro Slide */}
-          <div className="h-screen w-[100vw] flex flex-col justify-center items-center px-10 relative">
-            <div className="absolute inset-0 dot-grid text-foreground/[0.02]" />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="text-center relative z-10"
-            >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-bold tracking-widest uppercase mb-8">
-                <Layers size={14} />
-                Portfolio
-              </div>
-              <h2 className="text-4xl sm:text-7xl font-black mb-8 leading-[0.9] tracking-tighter text-foreground">
-                Selected <br />
-                <span className="text-primary italic">Works</span>.
-              </h2>
-              <div className="flex items-center justify-center gap-4 text-muted-foreground font-medium">
-                <span>Scroll to explore</span>
-                <ArrowRight className="animate-bounce-x" size={20} />
-              </div>
-            </motion.div>
-          </div>
+    <section id="projects" className="bg-background overflow-hidden selection:bg-primary/20 selection:text-primary" ref={containerRef}>
+      <NoiseTexture />
+      <div className="absolute inset-0 dot-grid text-foreground/[0.02] -z-10" />
 
-          {/* Project Slides */}
-          {projects.map((project, index) => (
-            <div key={project.id} className="h-screen w-[85vw] flex justify-center items-center flex-shrink-0 px-10 relative">
-              <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br ${project.accent} opacity-10 blur-[120px] rounded-full pointer-events-none`} />
+      {/* The scrolling track */}
+      <div ref={sliderRef} className="h-screen flex flex-row w-[calc((100vw*4))]"> 
+        {/* Intro Panel (Panel 1) */}
+        <div className="project-panel h-screen w-screen flex flex-col justify-center items-center px-10 relative shrink-0">
+          <div className="text-center relative z-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 text-primary text-[11px] font-bold tracking-[0.2em] uppercase mb-8 shadow-sm">
+              <Sparkles size={14} className="animate-pulse" /> Showcase
+            </div>
+            <h2 className="text-6xl md:text-8xl font-black mb-8 leading-[0.9] tracking-tighter text-foreground">
+              Selected <br />
+              <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent italic pr-4">Works.</span>
+            </h2>
+            <div className="flex items-center justify-center gap-3 text-muted-foreground font-medium uppercase tracking-widest text-xs mt-12">
+              <span className="animate-pulse">Scroll to explore</span>
+              <ArrowRight className="animate-bounce-x" size={16} />
+            </div>
+          </div>
+        </div>
+
+        {/* Project Panels (Panels 2, 3, 4...) */}
+        {projects.map((project, index) => (
+          <div key={project.id} className="project-panel h-screen w-screen flex justify-center items-center shrink-0 px-10 relative">
+            
+            {/* Giant Ambient Glow attached to each project */}
+            <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br ${project.accent} opacity-10 blur-[120px] rounded-full pointer-events-none -z-10`} />
+            
+            {/* Massive Cinematic Project Card */}
+            <div className="max-w-[85vw] w-full h-[80vh] rounded-[2rem] border border-border/40 bg-card/10 backdrop-blur-2xl flex flex-row overflow-hidden shadow-2xl relative group">
               
-              <Card className="max-w-6xl w-full h-[75vh] overflow-hidden group glass border-border bg-card/50 flex flex-col md:flex-row shadow-2xl relative">
-                <div className="md:w-3/5 h-2/3 md:h-full relative overflow-hidden">
-                  <Image
-                    src={project.image.startsWith("/") ? project.image : `/${project.image}`}
-                    alt={project.title}
-                    fill
-                    className="object-cover scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent hidden md:block" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent md:hidden" />
-                </div>
-                
-                <div className="md:w-2/5 p-10 flex flex-col relative z-20">
-                  <div className="flex items-center justify-between mb-8">
-                    <Badge variant="outline" className="border-primary/30 text-primary py-1 px-3 rounded-full text-[10px] font-bold tracking-widest uppercase">
-                      Case Study
-                    </Badge>
-                    <span className="text-muted-foreground font-mono text-sm leading-none">0{index + 1}</span>
+              {/* Left Side: Full-bleed Image */}
+              <div className="w-[55%] h-full relative overflow-hidden bg-black">
+                <div className="absolute inset-0 bg-background/20 z-10 group-hover:opacity-0 transition-opacity duration-700" />
+                <img src={project.image} alt={project.title} className="w-full h-full object-center opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out" />
+                <div className="absolute top-8 left-8 z-20">
+                  <div className="bg-background/80 backdrop-blur-md border border-border px-4 py-2 rounded-full text-xs font-bold tracking-[0.2em] uppercase text-primary">
+                    Case Study 0{index + 1}
                   </div>
-                  
-                  <h3 className="text-4xl lg:text-5xl font-black mb-6 text-foreground group-hover:text-primary transition-colors leading-none tracking-tighter">
+                </div>
+              </div>
+              
+              {/* Right Side: Editorial Content */}
+              <div className="w-[45%] h-full p-12 lg:p-16 flex flex-col relative z-20 border-l border-border/20">
+                <div className="mt-auto mb-auto">
+                  <h3 className="text-5xl lg:text-6xl font-black mb-8 text-foreground group-hover:text-primary transition-colors duration-500 leading-none tracking-tighter">
                     {project.title}
                   </h3>
                   
-                  <p className="text-muted-foreground mb-8 text-lg leading-relaxed font-medium">
+                  <p className="text-muted-foreground mb-10 text-lg leading-relaxed font-light">
                     {project.description}
                   </p>
                   
-                  <div className="flex flex-wrap gap-2 mb-10">
+                  <div className="flex flex-wrap gap-2.5 mb-12">
                     {project.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="text-xs font-bold text-muted-foreground border-b border-border pb-1"
-                      >
+                      <span key={tech} className="px-3 py-1.5 rounded-lg border border-border/50 bg-background/30 text-xs font-medium text-muted-foreground backdrop-blur-sm">
                         {tech}
                       </span>
                     ))}
                   </div>
-                  
-                  <div className="mt-auto flex flex-col sm:flex-row gap-4">
-                    <Button 
-                      className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full h-14 px-8 font-bold transition-all shadow-lg shadow-primary/20"
-                      asChild
-                    >
-                      <Link href={project.demo} target="_blank">
-                        Live Preview <ExternalLink className="w-4 h-4 ml-2" />
-                      </Link>
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="rounded-full h-14 px-8 font-bold border-border hover:bg-accent text-muted-foreground" 
-                      asChild
-                    >
-                      <Link href={project.github} target="_blank">
-                        <Github className="w-5 h-5 mr-2" /> Source
-                      </Link>
-                    </Button>
-                  </div>
                 </div>
-              </Card>
+                
+                {/* Fixed Footer Buttons */}
+                <div className="flex gap-4 mt-auto pt-8 border-t border-border/30">
+                  <Link href={project.demo} target="_blank" className="group/btn relative overflow-hidden flex-1 flex items-center justify-center gap-2 bg-foreground text-background h-14 rounded-full font-bold transition-all duration-300 shadow-xl shadow-background/5">
+                    <span className="relative z-10 flex items-center gap-2 group-hover/btn:text-primary-foreground transition-colors">
+                      Live Preview <ExternalLink className="w-4 h-4" />
+                    </span>
+                    <div className="absolute inset-0 h-full w-full bg-primary -translate-x-full group-hover/btn:translate-x-0 transition-transform duration-300 ease-out" />
+                  </Link>
+                  
+                  <Link href={project.github} target="_blank" className="flex-1 flex items-center justify-center gap-2 bg-transparent border border-border hover:bg-muted text-foreground h-14 rounded-full font-bold transition-all duration-300">
+                    <Github className="w-5 h-5" /> Source Code
+                  </Link>
+                </div>
+              </div>
+
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   )
 }
-

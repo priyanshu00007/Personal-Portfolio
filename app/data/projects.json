@@ -1,56 +1,35 @@
 
 [
   {
-    "id": "Ecommerce Website",
-    "title": "Ambrosia Sweets",
-    "description": "A feature-rich e-commerce platform built designed for a seamless and performant user experience Users can browse a wide range of traditional Indian sweets, add items to the cart, and check out with ease.",
+    "id": "Creative agency",
+    "title": "creative-ops",
+    "description": "A creative agency website that showcases the company's portfolio, services, and team. Built with Next.js and TypeScript, it features a modern design, smooth animations, and responsive layouts. The backend is powered by Express and Node.js, ensuring fast performance and scalability.",
     "image": "amb.png",
-    "technologies": ["Next.js", "TypeScript", "Express", "Node.js"],
-    "github": "https://github.com/yourproject",
-    "demo": "https://demo.com",
+    "technologies": ["React js ", "TypeScript", "Express", "Node.js","Framer Motion"],
+    "github": "https://creative-ops-six.vercel.app/",
+    "demo": "https://creative-ops-six.vercel.app/",
     "featured": true
   },
   {
-    "id": "Chatapp",
-    "title": "AI-Powered Chatapp",
+    "id": "Lms platform",
+    "title": "Edu-Platform",
     "description":
-      "A next-gen chat application combining real-time messaging with AI assistant capabilities using Gemini API and Socket.IO. Built with a modern frontend in React and a Python + WebSocket backend, the app also supports basic voice and rate-limiting features.",
+      "An online learning management system (LMS) that provides a comprehensive platform for educators and students. Built with React and Python, it offers features like course creation, student enrollment, progress tracking, and interactive quizzes. The backend is powered by Gemini and Node.js, ensuring a robust and scalable architecture.",
     "image": "chatapp.png",
-    "technologies": ["React", "Python", "Gemini", "Node js","Socket io"],
-    "github": "https://github.com",
-    "demo": "https://demo.com",
+    "technologies": ["React", "nodejs ", "GSAP", "Node js","FramerMotion","gemini","Express"],
+    "github": "https://edu-platform-spark-uni.vercel.app/",
+    "demo": "https://edu-platform-spark-uni.vercel.app/",
     "featured": true
   },
   {
-    "id": "Learning Plaoform",
-    "title": "Ace it",
+    "id": "aiassitant",
+    "title": "Spark Ai assitant",
     "description":
-      "An educational web app designed to guide students through complex tech topics with clarity. It delivers step-by-step learning paths, combining theory, quizzes, and practice problems to ensure real understanding.",
-    "image": "aceit.png",
-    "technologies": ["React", "Node.js", "MongoDB", "Express"],
-    "github": "https://aceit-eight.vercel.app/",
-    "demo": "https://aceit-eight.vercel.app/",
-    "featured": true
-  },
-  {
-    "id": "Codiverse",
-    "title": "Codie Verse",
-    "description": "Codiverse is a tool that can be used for learning process and can learn learning and frameworks and provide projects ideas , exploring communities and recent events and jobs oppertnities.",
-    "image": "codingverse.png",
-    "technologies": ["Next.js", "node js", "Tailwind CSS","json"],
-    "github": "https://codieverse.vercel.app/",
-    "demo": "https://codieverse.vercel.app/",
-    "featured": false
-  },
-  {
-    "id": "Market",
-    "title": "coming soon",
-    "description":
-      "A fast, responsive, and scalable e-commerce platform built to deliver seamless online shopping experiences. Market enables users to browse products, add to cart, and place orders with ease. With a clean UI, dynamic routing, and a powerful backend, it mimics real-world online marketplaces.",
-    "image": "/placeholder.svg?height=300&width=500",
-    "technologies": ["Node.js", "Express", "Next js ","MongoDB"],
-    "github": "",
-    "demo": "",
+      "A comprehensive web application platform featuring AI-powered whiteboards, collaborative tools, real-time analytics, and modern user experiences.",
+    "image": "spark.png",
+    "technologies": ["Node.js", "Express", "Next js ","MongoDB","Clerk Auth ","Tldraw","Zustand"],
+    "github": "https://spark-lemon.vercel.app/",
+    "demo": "https://spark-lemon.vercel.app/",
     "featured": false
   }
 ]

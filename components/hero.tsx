@@ -89,7 +89,7 @@ const ProfileCard = () => {
             <div className="p-2 rounded-lg bg-primary/20"><Sparkles className="text-primary size-5" /></div>
             <div>
               <p className="text-[10px] text-muted-foreground uppercase font-bold">Currently Building</p>
-              <p className="text-sm font-semibold text-foreground">Cloud-Native Apps</p>
+              <p className="text-sm font-semibold text-foreground">full stack web Apps</p>
             </div>
           </div>
         </motion.div>
@@ -144,10 +144,10 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-responsive-base text-foreground/90 mb-8 max-w-2xl"
             >
-              Full-Stack Developer & UI/UX Designer passionate about creating innovative digital solutions that blend creativity with cutting-edge technology
+              Full-Stack Developer passionate about creating innovative digital solutions that blend creativity with cutting-edge technology
             </motion.p>
 
-            <TypewriterText texts={["MERN Stack Developer", "Cloud Enthusiast", "UI/UX Designer"]} />
+            <TypewriterText texts={["MERN Stack Developer", "Problem Solver", "Innovator"]} />
 
             <p className="mt-8 text-muted-foreground text-lg max-w-md font-light leading-relaxed">
               Transforming complex problems into <span className="text-foreground font-medium italic">elegant digital solutions</span>. Based in India, working globally.
